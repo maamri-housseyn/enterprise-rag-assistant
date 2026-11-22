@@ -1,19 +1,23 @@
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.document import DocumentCreate, DocumentResponse
+
 from app.database.connection import get_db
+from app.schemas.document import (
+    DocumentCreate,
+    DocumentResponse,
+    DocumentUpdate,
+    SearchResult,
+    QuestionRequest,
+    QuestionResponse
+)
 from app.services.document_service import (
     create_document,
     get_document_by_id,
     update_document,
     delete_document
 )
-from app.schemas.document import (
-    DocumentCreate,
-    DocumentResponse,
-    DocumentUpdate
-)
+from app.generation.llm import generate_answer
+from app.retrieval.search import search_similar_chunks
 
 
 router = APIRouter(
@@ -104,4 +108,105 @@ def delete_existing_document(
 
     return {
         "message": "Document deleted successfully"
+    }
+
+
+@router.post("/{document_id}/search", response_model=SearchResult)
+def search_document(
+    document_id: int,
+    question: str,
+    db: Session = Depends(get_db)
+):
+    document = get_document_by_id(
+        db=db,
+        document_id=document_id
+    )
+
+    if document is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    results = search_similar_chunks(
+        db=db,
+        question=question,
+        document_id=document_id,
+        limit=3
+    )
+
+    formatted_results = [
+        {
+            "content": result[0].content,
+            "distance": result.distance
+        }
+        for result in results
+    ]
+
+    return {
+        "document_id": document_id,
+        "question": question,
+        "results": formatted_results
+    }
+
+
+@router.post("/{document_id}/ask", response_model=QuestionResponse)
+def ask_document(
+    document_id: int,
+    question_data: QuestionRequest,
+    db: Session = Depends(get_db)
+):
+    document = get_document_by_id(
+        db=db,
+        document_id=document_id
+    )
+
+    if document is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    # 1. Search for relevant chunks
+    results = search_similar_chunks(
+        db=db,
+        question=question_data.question,
+        document_id=document_id,
+        limit=3
+    )
+    # 2. Handle cases where no relevant chunks are found
+    if not results:
+        return {
+            "document_id": document_id,
+            "question": question_data.question,
+            "answer": "The document does not contain enough relevant information to answer this question.",
+            "sources": []
+        }
+    # 3. Build the context
+    context = "\n\n".join(
+        f"[Page {result[0].page_number}]\n{result[0].content}"
+        for result in results
+    )
+
+    # 4. Generate the answer
+    answer = generate_answer(
+        question=question_data.question,
+        context=context
+    )
+
+    # 5. Format the sources
+    sources = [
+        {
+            "page_number": result[0].page_number,
+            "content": result[0].content,
+            "distance": result.distance
+        }
+        for result in results
+    ]
+
+    return {
+        "document_id": document_id,
+        "question": question_data.question,
+        "answer": answer,
+        "sources": sources
     }

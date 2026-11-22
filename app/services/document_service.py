@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database.models import Document
 
+from app.database.models import Document, DocumentChunk
 
 def create_document(
     db: Session,
@@ -88,6 +89,44 @@ def delete_document(
         db.commit()
 
         return True
+
+    except Exception:
+        db.rollback()
+        raise
+
+
+def create_document_chunks(
+    db: Session,
+    document_id: int,
+    chunks: list[dict],
+    embeddings: list[list[float]]
+) -> list[DocumentChunk]:
+
+    if len(chunks) != len(embeddings):
+        raise ValueError(
+            "The number of chunks must match the number of embeddings."
+        )
+
+    document_chunks = []
+
+    for chunk, embedding in zip(chunks, embeddings):
+
+        document_chunk = DocumentChunk(
+            document_id=document_id,
+            page_number=chunk["page_number"],
+            content=chunk["content"],
+            embedding=embedding
+        )
+
+        document_chunks.append(document_chunk)
+    try:
+        db.add_all(document_chunks)
+        db.commit()
+
+        for document_chunk in document_chunks:
+            db.refresh(document_chunk)
+
+        return document_chunks
 
     except Exception:
         db.rollback()

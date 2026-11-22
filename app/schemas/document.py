@@ -18,3 +18,17 @@ class DocumentResponse(BaseModel):
 
 class DocumentUpdate(BaseModel):
     filename: str
+
+class SearchResult(BaseModel):
+    document_id: int
+    question: str
+    results: list[dict]    
+
+class QuestionRequest(BaseModel):
+    question: str
+
+class QuestionResponse(BaseModel):
+    document_id: int
+    question: str
+    answer: str
+    sources: list[dict]
