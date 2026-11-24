@@ -1,0 +1,134 @@
+{
+  "document_id": 25,
+  "judgments": [
+    {
+      "question_id": "Q01",
+      "relevant_chunk_ids": [
+        302
+      ]
+    },
+    {
+      "question_id": "Q02",
+      "relevant_chunk_ids": [
+        303
+      ]
+    },
+    {
+      "question_id": "Q03",
+      "relevant_chunk_ids": [
+        304,
+        305
+      ]
+    },
+    {
+      "question_id": "Q04",
+      "relevant_chunk_ids": [
+        305
+      ]
+    },
+    {
+      "question_id": "Q05",
+      "relevant_chunk_ids": [
+        306
+      ]
+    },
+    {
+      "question_id": "Q06",
+      "relevant_chunk_ids": [
+        307
+      ]
+    },
+    {
+      "question_id": "Q07",
+      "relevant_chunk_ids": [
+        308
+      ]
+    },
+    {
+      "question_id": "Q08",
+      "relevant_chunk_ids": [
+        308
+      ]
+    },
+    {
+      "question_id": "Q09",
+      "relevant_chunk_ids": [
+        309,
+        310
+      ]
+    },
+    {
+      "question_id": "Q10",
+      "relevant_chunk_ids": [
+        310,
+        311
+      ]
+    },
+    {
+      "question_id": "Q11",
+      "relevant_chunk_ids": [
+        313
+      ]
+    },
+    {
+      "question_id": "Q12",
+      "relevant_chunk_ids": [
+        314
+      ]
+    },
+    {
+      "question_id": "Q13",
+      "relevant_chunk_ids": [
+        317,
+        318
+      ]
+    },
+    {
+      "question_id": "Q14",
+      "relevant_chunk_ids": [
+        321
+      ]
+    },
+    {
+      "question_id": "Q15",
+      "relevant_chunk_ids": [
+        321
+      ]
+    },
+    {
+      "question_id": "Q16",
+      "relevant_chunk_ids": [
+        322,
+        323
+      ]
+    },
+    {
+      "question_id": "Q17",
+      "relevant_chunk_ids": [
+        326,
+        327
+      ]
+    },
+    {
+      "question_id": "Q18",
+      "relevant_chunk_ids": [
+        327,
+        329
+      ]
+    },
+    {
+      "question_id": "Q19",
+      "relevant_chunk_ids": [
+        329,
+        330
+      ]
+    },
+    {
+      "question_id": "Q20",
+      "relevant_chunk_ids": [
+        330,
+        331
+      ]
+    }
+  ]
+}

@@ -32,3 +32,23 @@ class QuestionResponse(BaseModel):
     question: str
     answer: str
     sources: list[dict]
+
+
+
+class DocumentSource(BaseModel):
+    document_id: int
+    filename: str
+    page_number: int
+    content: str
+    distance: float
+
+
+class MultiDocumentSearchResult(BaseModel):
+    question: str
+    results: list[DocumentSource]
+
+
+class MultiDocumentQuestionResponse(BaseModel):
+    question: str
+    answer: str
+    sources: list[DocumentSource]

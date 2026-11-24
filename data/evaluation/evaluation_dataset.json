@@ -1,0 +1,123 @@
+
+[
+  {
+    "id": "Q01",
+    "question": "Quel est l'objectif général de l'atelier 2 ?",
+    "expected_pages": [1],
+    "expected_topics": ["apprentissage supervisé", "Python", "classification"]
+  },
+  {
+    "id": "Q02",
+    "question": "Quel jeu de données est utilisé dans la première partie de l'atelier ?",
+    "expected_pages": [1],
+    "expected_topics": ["credit_scoring.csv", "crédit scoring"]
+  },
+  {
+    "id": "Q03",
+    "question": "Comment les données sont-elles séparées pour l'apprentissage et le test ?",
+    "expected_pages": [1],
+    "expected_topics": ["train_test_split", "50 % apprentissage", "50 % test", "random_state=1"]
+  },
+  {
+    "id": "Q04",
+    "question": "Quels sont les trois algorithmes de classification utilisés dans la première comparaison ?",
+    "expected_pages": [1],
+    "expected_topics": ["CART", "KNN", "MultilayerPerceptron"]
+  },
+  {
+    "id": "Q05",
+    "question": "Quels critères sont utilisés pour comparer les premiers classifieurs ?",
+    "expected_pages": [1],
+    "expected_topics": ["accuracy", "rappel", "précision"]
+  },
+  {
+    "id": "Q06",
+    "question": "Pourquoi faut-il normaliser les variables continues ?",
+    "expected_pages": [2],
+    "expected_topics": ["normalisation", "StandardScaler", "même poids des variables"]
+  },
+  {
+    "id": "Q07",
+    "question": "Quel est le rôle de l'ACP dans la préparation des données ?",
+    "expected_pages": [2],
+    "expected_topics": ["ACP", "PCA", "réduction de dimensions", "combinaisons linéaires"]
+  },
+  {
+    "id": "Q08",
+    "question": "Combien de nouvelles dimensions faut-il conserver après l'ACP dans l'exercice ?",
+    "expected_pages": [2],
+    "expected_topics": ["trois premières dimensions", "PCA"]
+  },
+  {
+    "id": "Q09",
+    "question": "À quoi sert la sélection de variables en apprentissage supervisé ?",
+    "expected_pages": [2],
+    "expected_topics": ["variables pertinentes", "bruit", "redondance"]
+  },
+  {
+    "id": "Q10",
+    "question": "Quelle méthode est utilisée pour déterminer l'importance des variables ?",
+    "expected_pages": [2],
+    "expected_topics": ["Random Forest", "feature_importances_", "importance des variables"]
+  },
+  {
+    "id": "Q11",
+    "question": "Quel outil Scikit-learn est utilisé pour optimiser les paramètres du meilleur algorithme ?",
+    "expected_pages": [3],
+    "expected_topics": ["GridSearchCV", "paramétrage des classifieurs"]
+  },
+  {
+    "id": "Q12",
+    "question": "Quel est l'intérêt de créer un pipeline dans cet atelier ?",
+    "expected_pages": [3],
+    "expected_topics": ["Pipeline", "automatisation des traitements", "pickle", "scoring"]
+  },
+  {
+    "id": "Q13",
+    "question": "Quels critères sont utilisés pour comparer les algorithmes par validation croisée ?",
+    "expected_pages": [3],
+    "expected_topics": ["AUC", "accuracy", "rappel", "précision", "temps d'exécution", "10-fold"]
+  },
+  {
+    "id": "Q14",
+    "question": "Combien de variables caractéristiques contient le jeu de données credit.data ?",
+    "expected_pages": [4],
+    "expected_topics": ["15 variables", "6 numériques", "9 catégorielles"]
+  },
+  {
+    "id": "Q15",
+    "question": "Quelles sont les deux valeurs possibles de la variable cible classe dans credit.data ?",
+    "expected_pages": [4],
+    "expected_topics": ["classification binaire", "valeurs + et -"]
+  },
+  {
+    "id": "Q16",
+    "question": "Comment les individus contenant des valeurs manquantes sont-ils traités dans la première expérience sur les variables numériques ?",
+    "expected_pages": [4],
+    "expected_topics": ["valeurs manquantes", "suppression des individus", "nan"]
+  },
+  {
+    "id": "Q17",
+    "question": "Quelles sont les deux stratégies d'imputation proposées pour traiter les valeurs manquantes ?",
+    "expected_pages": [5],
+    "expected_topics": ["mean", "most_frequent", "variables continues", "variables catégorielles"]
+  },
+  {
+    "id": "Q18",
+    "question": "Quelle stratégie d'imputation est utilisée pour les variables continues ?",
+    "expected_pages": [5],
+    "expected_topics": ["Imputer", "mean", "moyenne"]
+  },
+  {
+    "id": "Q19",
+    "question": "Comment les variables catégorielles sont-elles transformées pour être utilisées par les classifieurs ?",
+    "expected_pages": [6],
+    "expected_topics": ["OneHotEncoder", "variables binaires", "modalités"]
+  },
+  {
+    "id": "Q20",
+    "question": "Comment le jeu de données final est-il construit avant l'apprentissage des classifieurs ?",
+    "expected_pages": [6],
+    "expected_topics": ["données catégorielles encodées", "données continues normalisées", "concaténation"]
+  }
+]

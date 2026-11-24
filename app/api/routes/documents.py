@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-
+from app.database.models import Document, DocumentChunk
 from app.database.connection import get_db
 from app.schemas.document import (
     DocumentCreate,
@@ -8,7 +8,10 @@ from app.schemas.document import (
     DocumentUpdate,
     SearchResult,
     QuestionRequest,
-    QuestionResponse
+    QuestionResponse,
+    DocumentSource,
+    MultiDocumentSearchResult,
+    MultiDocumentQuestionResponse
 )
 from app.services.document_service import (
     create_document,
@@ -206,6 +209,125 @@ def ask_document(
 
     return {
         "document_id": document_id,
+        "question": question_data.question,
+        "answer": answer,
+        "sources": sources
+    }
+
+
+
+@router.post("/search", response_model=MultiDocumentSearchResult)
+def search_all_documents(
+    question_data: QuestionRequest,
+    db: Session = Depends(get_db)
+):
+    results = search_similar_chunks(
+        db=db,
+        question=question_data.question,
+        document_id=None,
+        limit=5
+    )
+
+    formatted_results = []
+
+    for chunk, distance in results:
+        document = get_document_by_id(
+            db=db,
+            document_id=chunk.document_id
+        )
+
+        if document is None:
+            continue
+
+        formatted_results.append({
+            "document_id": document.id,
+            "filename": document.filename,
+            "page_number": chunk.page_number,
+            "content": chunk.content,
+            "distance": float(distance)
+        })
+
+    return {
+        "question": question_data.question,
+        "results": formatted_results
+    }
+
+
+
+@router.post(
+    "/ask",
+    response_model=MultiDocumentQuestionResponse
+)
+def ask_all_documents(
+    question_data: QuestionRequest,
+    db: Session = Depends(get_db)
+):
+    # 1. Search across all documents
+    results = search_similar_chunks(
+        db=db,
+        question=question_data.question,
+        document_id=None,
+        limit=5
+    )
+
+    # 2. Handle cases where no relevant chunks are found
+    if not results:
+        return {
+            "question": question_data.question,
+            "answer": (
+                "The available documents do not contain "
+                "enough relevant information to answer this question."
+            ),
+            "sources": []
+        }
+
+    # 3. Build sources and context
+    sources = []
+    context_parts = []
+
+    for chunk, distance in results:
+        document = get_document_by_id(
+            db=db,
+            document_id=chunk.document_id
+        )
+
+        if document is None:
+            continue
+
+        sources.append({
+            "document_id": document.id,
+            "filename": document.filename,
+            "page_number": chunk.page_number,
+            "content": chunk.content,
+            "distance": float(distance)
+        })
+
+        context_parts.append(
+            f"[Document: {document.filename} | "
+            f"Page: {chunk.page_number}]\n{chunk.content}"
+        )
+
+    # 4. Handle cases where no valid sources remain
+    if not sources:
+        return {
+            "question": question_data.question,
+            "answer": (
+                "The available documents do not contain "
+                "enough relevant information to answer this question."
+            ),
+            "sources": []
+        }
+
+    context = "\n\n".join(context_parts)
+
+    # 5. Generate the answer with the LLM
+    answer = generate_answer(
+        question=question_data.question,
+        context=context
+    )
+
+    # 6. Return the answer and its sources
+    return {
         "question": question_data.question,
         "answer": answer,
         "sources": sources
