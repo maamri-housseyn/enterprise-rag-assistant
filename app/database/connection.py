@@ -1,9 +1,10 @@
 
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.core.config import DATABASE_URL
-import os
 
 # Create the database engine
 engine = create_engine(
@@ -32,9 +33,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-
 
 
 TEST_DATABASE_URL = os.getenv("TEST_DATABASE_URL")

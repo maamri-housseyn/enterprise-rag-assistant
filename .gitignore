@@ -30,3 +30,5 @@ htmlcov/
 .env
 .env.*
 !.env.example
+# Uploaded user documents
+data/uploads/

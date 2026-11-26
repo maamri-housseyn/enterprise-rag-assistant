@@ -8,3 +8,4 @@ psycopg[binary]==3.3.9
 httpx
 pymupdf==2.1
 pgvector==0.5.1
+python-multipart

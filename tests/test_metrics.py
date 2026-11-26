@@ -1,7 +1,6 @@
 
 import pytest
 
-from app.evaluation.metrics import recall_at_k, precision_at_k
 
 from app.evaluation.metrics import (
     recall_at_k,
